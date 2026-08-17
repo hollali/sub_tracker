@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import prisma from "../database/prisma.js";
+import { parsePagination, PaginationQuery } from "../middlewares/pagination.middleware.js";
 
 const userSelect = {
   id: true,
@@ -11,8 +12,18 @@ const userSelect = {
 
 export const getUsers = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const users = await prisma.user.findMany({ select: userSelect });
-    res.status(200).json({ success: true, data: users });
+    const { page, limit, skip } = parsePagination(req.query as PaginationQuery);
+
+    const [users, total] = await Promise.all([
+      prisma.user.findMany({ select: userSelect, skip, take: limit, orderBy: { createdAt: "desc" } }),
+      prisma.user.count(),
+    ]);
+
+    res.status(200).json({
+      success: true,
+      data: users,
+      pagination: { page, limit, total, totalPages: Math.ceil(total / limit) },
+    });
   } catch (error) {
     next(error);
   }
