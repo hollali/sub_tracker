@@ -4,25 +4,41 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js"
+    "start": "node --import tsx app.ts",
+    "dev": "nodemon --exec tsx app.ts",
+    "build": "tsc",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate dev",
+    "db:studio": "prisma studio"
   },
   "dependencies": {
+    "@prisma/adapter-pg": "^7.9.1",
+    "@prisma/client": "^7.9.1",
     "bcrypt": "^5.1.1",
-    "bcryptjs": "^3.0.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "dotenv": "^16.4.7",
     "express": "~4.16.1",
     "jsonwebtoken": "^9.0.2",
-    "mongodb": "^6.13.0",
-    "mongoose": "^8.10.0",
-    "morgan": "~1.9.1"
+    "morgan": "~1.9.1",
+    "pg": "^8.23.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.20.0",
+    "@types/bcrypt": "^6.0.0",
+    "@types/cookie-parser": "^1.4.10",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/morgan": "^1.9.10",
+    "@types/node": "^26.2.0",
+    "@types/pg": "^8.21.0",
     "eslint": "^9.20.0",
     "globals": "^15.14.0",
-    "nodemon": "^3.1.9"
+    "nodemon": "^3.1.9",
+    "prisma": "^7.9.1",
+    "tsx": "^4.23.12",
+    "typescript": "^7.0.2"
   }
 }
